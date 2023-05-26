@@ -1,1 +1,15 @@
+# Implementation of stack using list
+my_stack = []
 
+my_stack.append("x")
+my_stack.append("y")
+my_stack.append("Z")
+
+print(my_stack)
+print()
+print("Elements that are poped: ")
+print(my_stack.pop())
+print(my_stack.pop())
+print(my_stack.pop())
+print()
+print(my_stack)
