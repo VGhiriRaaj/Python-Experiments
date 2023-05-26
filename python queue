@@ -1,0 +1,35 @@
+# Implementation of queue using list
+my_queue = []
+
+my_queue.append("x")
+my_queue.append("Y")
+my_queue.append("Z")
+
+print(my_queue)
+print()
+
+print("Elements that are poped: ")
+print(my_queue.pop(0))
+print(my_queue.pop(0))
+print(my_queue.pop(0))
+
+print(my_queue)
+
+# Implementation of queue using collection.deque \
+
+from collections import deque
+q = deque()
+
+q.append("a")
+q.append("b")
+q.append("c")
+
+print(q)
+print()
+
+print("Elements that are poped: ")
+print(q.popleft())
+print(q.pop())
+print(q.popleft())
+
+print(q)
