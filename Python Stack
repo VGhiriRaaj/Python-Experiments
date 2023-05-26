@@ -13,3 +13,21 @@ print(my_stack.pop())
 print(my_stack.pop())
 print()
 print(my_stack)
+
+
+# Implementation of stack using deque
+
+from collections import deque
+my_stack1 = deque()
+my_stack.append("x")
+my_stack.append("y")
+my_stack.append("Z")
+
+print(my_stack)
+print()
+print("Elements that are poped: ")
+print(my_stack.pop())
+print(my_stack.pop())
+print(my_stack.pop())
+print()
+print(my_stack)
