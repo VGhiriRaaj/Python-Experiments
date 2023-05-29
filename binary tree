@@ -1,4 +1,4 @@
-# Inorder traversal
+# Inorder, preorder, postorder traversal
 class Node:
     def __init__(self, data):
         self.left = None
@@ -10,6 +10,20 @@ def printInorder(root):
         printInorder(root.left)
         print(root.data)
         printInorder(root.right)
+
+def printpreorder(root):
+    if root:
+        print(root.data)
+        printpreorder(root.left)
+        printpreorder(root.right)
+
+def printPostorder(root):
+    if root:
+        printPostorder(root.left)
+        printPostorder(root.right)
+        print(root.data)
+        
+
 root = Node(1)
 root.left = Node(2)
 root.right = Node(3)
@@ -18,3 +32,7 @@ root.right.right = Node(5)
 root.left.right = Node(6)
 root.right.left = Node(7)
 printInorder(root)
+print()
+printpreorder(root)
+print()
+printPostorder(root)
