@@ -1,0 +1,55 @@
+class Node:
+    def __init__(self, data):
+        self.left = None
+        self.right = None
+        self.data = data
+
+    def insert(self, data1):
+        if data1 < self.data:
+            if self.left is None:
+                self.left = Node(data1)
+            else:
+                self.left.insert(data1)
+
+        elif data1 > self.data:
+            if self.right is None:
+                self.right = Node(data1)
+            else:
+                self.right.insert(data1)
+
+        else:
+            self.data = data1
+            return
+
+
+    def search(self, val):
+        if val == self.data:
+           return str(val)+"Yes"
+
+        elif val < self.data:
+            if self.left:
+                return self.left.search(val)
+            else:
+                return str(val)+"No"
+        else:
+            if self.right:
+                return self.right.search(val)
+            else:
+               return str(val)+"No"
+
+    def printTree(self):
+        if self.left:
+            self.left.printTree()
+        print(self.data)
+        if self.right:
+            self.right.printTree()
+
+root = Node(9)
+root.insert(5)
+root.insert(6)
+root.insert(4)
+root.insert(6)
+root.insert(2)
+root.printTree()
+
+print(root.search(10))
