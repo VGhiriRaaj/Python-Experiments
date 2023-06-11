@@ -1,0 +1,12 @@
+def random_words(word_list, starting_letter):
+    suggestions = []
+    for word in word_list:
+        if word.startswith(starting_letter):
+            suggestions.append(word)
+    return suggestions
+
+
+words_list = ["animal", "and", "anaconda", "answer", "angle", "ananda"]
+letter = "anac"
+suggested_words = random_words(words_list, letter)
+print(suggested_words)
