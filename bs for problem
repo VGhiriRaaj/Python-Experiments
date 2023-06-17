@@ -25,7 +25,7 @@ def suggest_words(word_list, target):
         return []
 
     suggestions = []
-    for i in range(left_index, right_index+1):
+    for i in range(left_index, right_index + 1):
         if sorted_words[i].startswith(target):
             suggestions.append(sorted_words[i])
         else:
@@ -34,7 +34,7 @@ def suggest_words(word_list, target):
     return suggestions
 
 
-words = ["animal", "and", "anaconda", "answer", "angle", "ananda"]
-target = "ans"
+words = ["animal", "and", "anaconda", "answer", "angle", "ananda", "cat", "card", "camel", "caterpillar", "will", "make"]
+target = "an"
 suggested_words = suggest_words(words, target)
 print(suggested_words)
