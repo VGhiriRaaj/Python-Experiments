@@ -1,0 +1,40 @@
+def binary_search(arr, target):
+    left = 0
+    right = len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid].startswith(target):
+            left_index = left
+            right_index = right
+            return left_index, right_index
+
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+
+def suggest_words(word_list, target):
+    sorted_words = sorted(word_list)
+    left_index, right_index = binary_search(sorted_words, target)
+
+    if left_index == 0 and right_index == 0:
+        return []
+
+    suggestions = []
+    for i in range(left_index, right_index+1):
+        if sorted_words[i].startswith(target):
+            suggestions.append(sorted_words[i])
+        else:
+            break
+
+    return suggestions
+
+
+words = ["animal", "and", "anaconda", "answer", "angle", "ananda"]
+target = "ans"
+suggested_words = suggest_words(words, target)
+print(suggested_words)
