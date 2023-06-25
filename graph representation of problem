@@ -1,40 +1,41 @@
-class Graph:
+class GraphNode:
     def __init__(self):
-        self.graph = {}
-
-    def add_node(self, node):
-        if node not in self.graph:
-            self.graph[node] = []
-
-    def add_edge(self, node1, node2):
-        if node1 in self.graph and node2 in self.graph:
-            self.graph[node1].append(node2)
-            # self.graph[node2].append(node1)
-
-    def print_graph(self):
-        for node, neighbors in self.graph.items():
-            print(f"Node {node}: {neighbors}")
+        self.children = [None for _ in range(26)]
+        self.wordCount = 0
 
 
-def create_alphabet_graph(words):
-    graph = Graph()
+def insert_key(root, key):
+    currentNode = root
 
-    for word in words:
-        for i in range(len(word)):
-            letter = word[i]
-            graph.add_node(letter)
+    for c in key:
+        if not currentNode.children[ord(c) - ord('a')]:
+            newNode = GraphNode()
+            currentNode.children[ord(c) - ord('a')] = newNode
 
-            if i > 0:
-                prev_letter = word[i - 1]
-                graph.add_edge(prev_letter, letter)
+        currentNode = currentNode.children[ord(c) - ord('a')]
 
-    return graph
+    currentNode.wordCount += 1
 
 
+def print_trie(node, prefix):
+    if node.wordCount > 0:
+        print(prefix, "(", node.wordCount, ")")
 
-word_list = ["animal", "and", "anaconda", "answer", "angle", "ananda", "cat", "card", "camel", "caterpillar", "will",
-             "make"]
-updated_words = sorted(word_list)
-graph = create_alphabet_graph(updated_words)
+    for i, child in enumerate(node.children):
+        if child:
+            char = chr(ord('a') + i)
+            print_trie(child, prefix + char)
 
-graph.print_graph()
+
+root = GraphNode()
+
+input = ["animal", "and", "anaconda", "answer", "angle", "ananda", "cat", "card", "camel", "caterpillar",
+                 "will", "make"]
+input_strings = sorted(input)
+n = len(input_strings)
+
+for i in range(n):
+    insert_key(root, input_strings[i])
+
+print("Trie Graph:")
+print_trie(root, "")
