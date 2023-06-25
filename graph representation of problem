@@ -4,10 +4,10 @@ class GraphNode:
         self.wordCount = 0
 
 
-def insert_key(root, key):
+def add_word(root, word):
     currentNode = root
 
-    for c in key:
+    for c in word:
         if not currentNode.children[ord(c) - ord('a')]:
             newNode = GraphNode()
             currentNode.children[ord(c) - ord('a')] = newNode
@@ -17,25 +17,48 @@ def insert_key(root, key):
     currentNode.wordCount += 1
 
 
-def print_trie(node, prefix):
+def search_word(root, word):
+    currentNode = root
+
+    for c in word:
+        if not currentNode.children[ord(c) - ord('a')]:
+            return False
+
+        currentNode = currentNode.children[ord(c) - ord('a')]
+
+    return currentNode.wordCount > 0
+
+
+def print_wordGraph(node, prefix):
     if node.wordCount > 0:
         print(prefix, "(", node.wordCount, ")")
 
     for i, child in enumerate(node.children):
         if child:
             char = chr(ord('a') + i)
-            print_trie(child, prefix + char)
+            print_wordGraph(child, prefix + char)
 
 
 root = GraphNode()
 
 input = ["animal", "and", "anaconda", "answer", "angle", "ananda", "cat", "card", "camel", "caterpillar",
-                 "will", "make"]
+         "will", "make"]
 input_strings = sorted(input)
 n = len(input_strings)
 
 for i in range(n):
-    insert_key(root, input_strings[i])
+    add_word(root, input_strings[i])
 
-print("Trie Graph:")
-print_trie(root, "")
+print("word Graph:")
+print_wordGraph(root, "")
+
+search_query_strings = ["and", "camel", "cat"]
+
+search_queries = len(search_query_strings)
+
+for i in range(search_queries):
+    print("Query String:", search_query_strings[i])
+    if search_word(root, search_query_strings[i]):
+        print("The query string is present in the wordgraph")
+    else:
+        print("The query string is not present in the wordgraph")
