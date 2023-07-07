@@ -1,0 +1,94 @@
+import time
+
+start = time.time()
+class GraphNode:
+    def __init__(self):
+        self.children = [None for _ in range(26)]
+        self.wordCount = 0
+        self.weight = 0
+
+
+def add_word(root, word):
+    currentNode = root
+
+    for c in word:
+        if not currentNode.children[ord(c) - ord('a')]:
+            newNode = GraphNode()
+            currentNode.children[ord(c) - ord('a')] = newNode
+
+        currentNode = currentNode.children[ord(c) - ord('a')]
+        currentNode.weight += 1
+
+    currentNode.wordCount += 1
+
+
+def search_word(root, word):
+    currentNode = root
+
+    for c in word:
+        if not currentNode.children[ord(c) - ord('a')]:
+            return False
+
+        currentNode = currentNode.children[ord(c) - ord('a')]
+
+    return currentNode.wordCount > 0
+
+
+def print_wordGraph(node, prefix):
+    if node.wordCount > 0:
+        print(prefix, "(", node.wordCount, ")")
+
+    for i, child in enumerate(node.children):
+        if child:
+            char = chr(ord('a') + i)
+            print_wordGraph(child, prefix + char)
+
+
+def find_most_frequent_words(node, prefix="", k=3):
+    word_weights = []
+    if node.wordCount > 0:
+        word_weights.append((prefix, node.weight))
+
+    for i, child in enumerate(node.children):
+        if child:
+            char = chr(ord('a') + i)
+            word_weights.extend(find_most_frequent_words(child, prefix + char, k))
+
+    word_weights.sort(key=lambda x: x[1], reverse=True)
+    return word_weights[:k]
+
+
+root = GraphNode()
+
+word_list = ["animal", "and", "anaconda", "answer", "angle", "ananda", "cat", "card", "camel", "caterpillar", "will", "make"]
+input_strings = sorted(word_list)
+n = len(input_strings)
+
+for i in range(n):
+    add_word(root, input_strings[i])
+
+num_words = int(input("Enter the number of words to add: "))
+for _ in range(num_words):
+    word = input("Enter a word: ")
+    add_word(root, word)
+
+print("Word Graph:")
+print_wordGraph(root, "")
+
+search_query_strings = ["and", "camel", "cat"]
+
+search_queries = len(search_query_strings)
+
+for i in range(search_queries):
+    print("Query String:", search_query_strings[i])
+    if search_word(root, search_query_strings[i]):
+        print("The query string is present in the word graph")
+    else:
+        print("The query string is not present in the word graph")
+
+most_frequent_words = find_most_frequent_words(root)
+print("Most Frequent Words:")
+for word, weight in most_frequent_words:
+    print(f"Word: {word}, Weight: {weight}")
+end = time.time()
+print(end-start)
