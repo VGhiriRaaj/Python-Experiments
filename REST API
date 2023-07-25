@@ -1,0 +1,57 @@
+class GraphNode:
+    def __init__(self):
+        self.children = [None for _ in range(26)]
+        self.wordCount = 0
+
+
+def add_word(root, word):
+    currentNode = root
+
+    for c in word:
+        if not currentNode.children[ord(c) - ord('a')]:
+            newNode = GraphNode()
+            currentNode.children[ord(c) - ord('a')] = newNode
+
+        currentNode = currentNode.children[ord(c) - ord('a')]
+
+    currentNode.wordCount += 1
+
+
+def get_top_words(node, prefix, word_count_list, user_prefix):
+    if prefix.startswith(user_prefix) and node.wordCount > 0:
+        word_count_list.append((prefix, node.wordCount))
+
+    for i, child in enumerate(node.children):
+        if child:
+            char = chr(ord('a') + i)
+            get_top_words(child, prefix + char, word_count_list, user_prefix)
+
+
+app = Flask(__name__)
+root = GraphNode()
+
+word_list = ["animal", "and", "anaconda", "answer", "angle", "ananda", "cat", "card", "camel", "caterpillar", "will",
+             "make"]
+for word in word_list:
+    add_word(root, word)
+
+
+@app.route('/add_word', methods=['GET'])
+def endpoint_add_word():
+    word = request.args.get('word')  # Get the word to add from query parameter
+    add_word(root, word)
+    return jsonify({"message": "Word added successfully"})
+
+
+@app.route('/get_top_words', methods=['GET'])
+def endpoint_get_top_words():
+    user_prefix = request.args.get('user_prefix')  # Get the user_prefix from query parameter
+    word_count_list = []
+    get_top_words(root, "", word_count_list, user_prefix)  # Pass user_prefix to the function
+    word_count_list.sort(key=lambda x: x[1], reverse=True)
+    filtered_words = [(word, count) for word, count in word_count_list if word.startswith(user_prefix)]
+    return jsonify({"top_words": filtered_words[:3]})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
