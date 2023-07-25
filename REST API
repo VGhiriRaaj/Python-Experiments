@@ -38,16 +38,16 @@ for word in word_list:
 
 @app.route('/add_word', methods=['GET'])
 def endpoint_add_word():
-    word = request.args.get('word')  # Get the word to add from query parameter
+    word = request.args.get('word')  
     add_word(root, word)
     return jsonify({"message": "Word added successfully"})
 
 
 @app.route('/get_top_words', methods=['GET'])
 def endpoint_get_top_words():
-    user_prefix = request.args.get('user_prefix')  # Get the user_prefix from query parameter
+    user_prefix = request.args.get('user_prefix')  
     word_count_list = []
-    get_top_words(root, "", word_count_list, user_prefix)  # Pass user_prefix to the function
+    get_top_words(root, "", word_count_list, user_prefix)  
     word_count_list.sort(key=lambda x: x[1], reverse=True)
     filtered_words = [(word, count) for word, count in word_count_list if word.startswith(user_prefix)]
     return jsonify({"top_words": filtered_words[:3]})
