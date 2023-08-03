@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Words Finder</title>
+</head>
+<body>
+<h1>Top Words Finder</h1>
+<label for="user_prefix">Enter Prefix:</label>
+<input type="text" id="user_prefix" name="user_prefix">
+<button onclick="getTopWords()">Search</button>
+
+<h2>Top Words:</h2>
+<textarea id="top_words" rows="5" cols="40" readonly></textarea>
+
+<script>
+        function getTopWords() {
+            const user_prefix = document.getElementById("user_prefix").value;
+            fetch(`/get_top_words?user_prefix=${user_prefix}`)
+                .then(response => response.json())
+                .then(data => {
+                    const topWords = data.top_words.map(item => `${item[0]}: ${item[1]}`).join('\n');
+                    document.getElementById("top_words").value = topWords;
+                })
+                .catch(error => {
+                    console.error("Error fetching top words:", error);
+                });
+        }
+    </script>
+</body>
+</html>
